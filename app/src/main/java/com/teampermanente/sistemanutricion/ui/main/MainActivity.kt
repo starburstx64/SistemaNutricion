@@ -13,15 +13,22 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import androidx.lifecycle.ViewModelProviders
 import com.teampermanente.sistemanutricion.R
+import com.teampermanente.sistemanutricion.ui.main.home.HomeViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private val model by lazy { ViewModelProviders.of(this).get(HomeViewModel::class.java) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        model.idUsuario = intent.getStringExtra("idUsuario")!!
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 

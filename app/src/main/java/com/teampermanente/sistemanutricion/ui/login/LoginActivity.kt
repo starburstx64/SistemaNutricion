@@ -72,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
 
                 //Complete and destroy login activity once successful
                 val toMainIntent = Intent(this, MainActivity::class.java)
+                toMainIntent.putExtra("idUsuario", username.text.toString())
                 startActivity(toMainIntent)
 
                 finish()

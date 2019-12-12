@@ -109,6 +109,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/home_textview_sessionIMC"
                 android:layout_marginTop="10dp"
                 android:text="IMC: 18"
                 android:textSize="20sp"
@@ -116,6 +117,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/home_textview_sessionWeight"
                 android:textSize="15sp"
                 android:layout_marginTop="10dp"
                 android:text="Peso: 65kg"
@@ -123,6 +125,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/home_textview_sessionPercent"
                 android:textSize="15sp"
                 android:text="Porcentaje de grasa: 15%"
                 android:layout_marginTop="10dp"
@@ -130,6 +133,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/home_textview_sessionWaist"
                 android:textSize="15sp"
                 android:text="Circunferencia de cintura: 77cm"
                 android:layout_marginTop="10dp"
@@ -137,6 +141,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/home_textview_sessionHip"
                 android:textSize="15sp"
                 android:text="Circunferencia de cadera: 83cm"
                 android:layout_marginTop="10dp"
@@ -144,6 +149,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/home_textview_sessionBrachial"
                 android:textSize="15sp"
                 android:text="Cincunferencia braquial: 24cm"
                 android:layout_marginTop="10dp"
