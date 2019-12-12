@@ -1,6 +1,8 @@
 package com.teampermanente.sistemanutricion.data
 
+import android.content.Context
 import com.teampermanente.sistemanutricion.data.model.LoggedInUser
+import com.teampermanente.sistemanutricion.ui.login.LoginViewModel
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -27,15 +29,15 @@ class LoginRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(fileKey: String): Result<LoggedInUser> {
+    fun login(fileKey: String, context: Context, callback : LoginViewModel.LoginCallback) {
         // handle login
-        val result = dataSource.login(fileKey)
-
-        if (result is Result.Success) {
-            setLoggedInUser(result.data)
-        }
-
-        return result
+        dataSource.login(fileKey, context, callback, object : LoginViewModel.LoginCallback {
+            override fun onCallback(loginResult: Result<LoggedInUser>) {
+                if (loginResult is Result.Success) {
+                    setLoggedInUser(loginResult.data)
+                }
+            }
+        })
     }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {

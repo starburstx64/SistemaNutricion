@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:id="@+id/home_textview_imc"
             android:textStyle=""
             android:text="18"
             android:textAlignment="center"

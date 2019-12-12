@@ -69,14 +69,14 @@ class LoginActivity : AppCompatActivity() {
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
+
+                //Complete and destroy login activity once successful
+                val toMainIntent = Intent(this, MainActivity::class.java)
+                startActivity(toMainIntent)
+
+                finish()
             }
             setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            val toMainIntent = Intent(this, MainActivity::class.java)
-            startActivity(toMainIntent)
-
-            finish()
         })
 
         username.apply {
@@ -88,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
 
             setOnEditorActionListener {_, actionId, _ ->
                 when (actionId) {
-                    EditorInfo.IME_ACTION_DONE -> loginViewModel.login(username.text.toString())
+                    EditorInfo.IME_ACTION_DONE -> loginViewModel.login(username.text.toString(), this@LoginActivity)
                 }
 
                 false
@@ -96,27 +96,22 @@ class LoginActivity : AppCompatActivity() {
 
             loginButton.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString())
+
+                val usernameValue = username.text.toString()
+                val queue = Volley.newRequestQueue(this@LoginActivity)
+                val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerexpediente?expedienteId=$usernameValue")
+
+                // Request a string response from the provided URL.
+                 val stringRequest = StringRequest(
+                    Request.Method.GET, url,
+                    Response.Listener<String> { response ->
+                        loginViewModel.handleLoginResponse(response)
+                    },
+                    Response.ErrorListener { Log.d("Node", "Error rasa") }
+                )
+                queue.add(stringRequest)
             }
         }
-
-        // Instantiate the RequestQueue.
-        val queue = Volley.newRequestQueue(this)
-        val url = "https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerexpediente?expedienteId=dad12"
-
-        // Request a string response from the provided URL.
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> { response ->
-
-                if (response != "[]") {
-                    Log.d("Nose", response)
-                }
-            },
-            Response.ErrorListener { Log.d("Node", "Error rasa") })
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest)
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
