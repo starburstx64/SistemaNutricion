@@ -39,6 +39,8 @@ class HomeFragment : Fragment() {
 
     private var selectedSession = 1
 
+    private val model by lazy { ViewModelProviders.of(activity!!).get(HomeViewModel::class.java) }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -73,7 +75,7 @@ class HomeFragment : Fragment() {
         imcLineChart.data = LineData(LineDataSet(entries, "Peso"), LineDataSet(entries2, "Sesiones"))
 
         val queue = Volley.newRequestQueue(root.context)
-        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=dad12&idSeguimiento=$selectedSession")
+        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=${model.idUsuario}&idSeguimiento=$selectedSession")
 
         // Request a string response from the provided URL.
         val stringRequest = StringRequest(
@@ -108,7 +110,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val model = ViewModelProviders.of(activity!!).get(HomeViewModel::class.java)
         Log.d("Test", model.idUsuario)
 
         val queue = Volley.newRequestQueue(view.context)
