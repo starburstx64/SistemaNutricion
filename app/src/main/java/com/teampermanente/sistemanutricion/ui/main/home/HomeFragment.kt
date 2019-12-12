@@ -74,35 +74,7 @@ class HomeFragment : Fragment() {
         imcLineChart = root.findViewById(R.id.home_lineChart_imc) as LineChart
         imcLineChart.data = LineData(LineDataSet(entries, "Peso"), LineDataSet(entries2, "Sesiones"))
 
-        val queue = Volley.newRequestQueue(root.context)
-        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=${model.idUsuario}&idSeguimiento=$selectedSession")
-
-        // Request a string response from the provided URL.
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> { response ->
-
-                val jsonArray = JSONArray(response)
-                val jsonObject = jsonArray.getJSONObject(0)
-
-                val imc = jsonObject.getString("imc")
-                val peso = jsonObject.getString("peso")
-                val grasa = jsonObject.getString("porGrasa")
-                val cintura = jsonObject.getString("cCintura")
-                val cadera = jsonObject.getString("cCadera")
-                val braquial = jsonObject.getString("cBraquial")
-
-                imcTextView.text = jsonObject.getString("imc")
-                sessionIMC.text = "IMC: $imc"
-                sessionWeight.text = "Peso: $peso kg"
-                sessionPercent.text = "Porcentaje de grasa: $grasa %"
-                sessionWaist.text = "Circunferencia de cintura: $cintura cm"
-                sessionHip.text = "Circunferencia de cadera: $cadera cm"
-                sessionBrachial.text = "Circunferencia braquial: $braquial cm"
-            },
-            Response.ErrorListener { Log.d("Node", "Error rasa") }
-        )
-        queue.add(stringRequest)
+        updateStatistics()
 
         return root
     }
@@ -132,18 +104,71 @@ class HomeFragment : Fragment() {
                 sessionSpinner.adapter = sessionAdapter
                 sessionSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                        selectedSession = p2
+                        selectedSession = p2 + 1
+                        updateStatistics()
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {
 
                     }
                 }
+
+                setQurrentIMC(numSessions)
+            },
+            Response.ErrorListener { Log.d("Node", "Error rasa") }
+        )
+
+        queue.add(stringRequest)
+    }
+
+    fun updateStatistics() {
+        val queue = Volley.newRequestQueue(context)
+        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=${model.idUsuario}&idSeguimiento=$selectedSession")
+
+        // Request a string response from the provided URL.
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            Response.Listener<String> { response ->
+
+                val jsonArray = JSONArray(response)
+                val jsonObject = jsonArray.getJSONObject(0)
+
+                val imc = jsonObject.getString("imc")
+                val peso = jsonObject.getString("peso")
+                val grasa = jsonObject.getString("porGrasa")
+                val cintura = jsonObject.getString("cCintura")
+                val cadera = jsonObject.getString("cCadera")
+                val braquial = jsonObject.getString("cBraquial")
+
+                //imcTextView.text = jsonObject.getString("imc")
+                sessionIMC.text = "IMC: $imc"
+                sessionWeight.text = "Peso: $peso kg"
+                sessionPercent.text = "Porcentaje de grasa: $grasa %"
+                sessionWaist.text = "Circunferencia de cintura: $cintura cm"
+                sessionHip.text = "Circunferencia de cadera: $cadera cm"
+                sessionBrachial.text = "Circunferencia braquial: $braquial cm"
             },
             Response.ErrorListener { Log.d("Node", "Error rasa") }
         )
         queue.add(stringRequest)
+    }
 
+    fun setQurrentIMC(idSession : Int) {
+        val queue = Volley.newRequestQueue(context)
+        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=${model.idUsuario}&idSeguimiento=$idSession")
 
+        // Request a string response from the provided URL.
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            Response.Listener<String> { response ->
+
+                val jsonArray = JSONArray(response)
+                val jsonObject = jsonArray.getJSONObject(0)
+
+                imcTextView.text = jsonObject.getString("imc")
+            },
+            Response.ErrorListener { Log.d("Node", "Error rasa") }
+        )
+        queue.add(stringRequest)
     }
 }
