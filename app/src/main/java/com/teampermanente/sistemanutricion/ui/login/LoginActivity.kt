@@ -12,11 +12,10 @@ import android.text.TextWatcher
 import android.util.JsonReader
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import com.amazonaws.auth.CognitoCachingCredentialsProvider
 import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory
 import com.amazonaws.regions.Regions
@@ -30,6 +29,7 @@ import com.google.gson.JsonParser
 import com.teampermanente.sistemanutricion.R
 import com.teampermanente.sistemanutricion.clientsdk.NutriologoQuerysClient
 import com.teampermanente.sistemanutricion.ui.main.MainActivity
+import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -42,9 +42,32 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_login)
 
+
         val username = findViewById<EditText>(R.id.username)
         val loginButton = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
+        val animacion: Animation
+        val animacionDos: Animation
+
+        animacion = AnimationUtils.loadAnimation(this, R.anim.animacion_top)
+        animacionDos = AnimationUtils.loadAnimation(this, R.anim.animacion_button)
+
+        imageView2.animation = animacion
+        username.animation = animacion
+        login.animation = animacionDos
+        val background = object : Thread() {
+            override fun run() {
+                super.run()
+
+                try {
+                    sleep((3 * 1000).toLong())
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        background.start()
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -73,10 +96,16 @@ class LoginActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
-            val toMainIntent = Intent(this, MainActivity::class.java)
-            startActivity(toMainIntent)
 
-            finish()
+
+                        val toMainIntent = Intent(baseContext, MainActivity::class.java)
+                        startActivity(toMainIntent)
+                        finish()
+
+
+
+
+
         })
 
         username.apply {
@@ -86,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
 
-            setOnEditorActionListener {_, actionId, _ ->
+            setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE -> loginViewModel.login(username.text.toString())
                 }
@@ -102,7 +131,8 @@ class LoginActivity : AppCompatActivity() {
 
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this)
-        val url = "https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerexpediente?expedienteId=dad12"
+        val url =
+            "https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerexpediente?expedienteId=dad12"
 
         // Request a string response from the provided URL.
         val stringRequest = StringRequest(
