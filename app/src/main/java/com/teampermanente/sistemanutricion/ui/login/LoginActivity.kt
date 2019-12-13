@@ -89,6 +89,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
+            loading.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
@@ -103,7 +104,6 @@ class LoginActivity : AppCompatActivity() {
                 toMainIntent.putExtra("userMail", loginResult.success.userMail)
                 startActivity(toMainIntent)
 
-                loading.visibility = View.GONE
                 finish()
             }
             setResult(Activity.RESULT_OK)
