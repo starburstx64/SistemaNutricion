@@ -10,4 +10,9 @@ class HomeViewModel : ViewModel() {
         value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
+
+    var idUsuario : String = "dad12"
+    var username : String = ""
+    var userLastName : String = ""
+    var userMail : String = ""
 }

@@ -13,15 +13,38 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.TextView
+import androidx.lifecycle.ViewModelProviders
 import com.teampermanente.sistemanutricion.R
+import com.teampermanente.sistemanutricion.ui.main.home.HomeViewModel
+import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_home.*
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private val model by lazy { ViewModelProviders.of(this).get(HomeViewModel::class.java) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        model.idUsuario = intent.getStringExtra("idUsuario")!!
+        model.username = intent.getStringExtra("username")!!
+        model.userLastName = intent.getStringExtra("userLastName")!!
+        model.userMail = intent.getStringExtra("userMail")!!
+
+        val nav = findViewById<NavigationView>(R.id.nav_view) as NavigationView
+        val header = nav.getHeaderView(0)
+        val userNameView = header.findViewById(R.id.nav_header_username) as TextView
+        val useMail = header.findViewById(R.id.nav_header_mail) as TextView
+        userNameView.text = "${model.username} ${model.userLastName}"
+        useMail.text = model.userMail
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -33,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(

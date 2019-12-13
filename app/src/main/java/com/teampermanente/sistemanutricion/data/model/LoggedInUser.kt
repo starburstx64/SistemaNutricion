@@ -5,5 +5,7 @@ package com.teampermanente.sistemanutricion.data.model
  */
 data class LoggedInUser(
     val userId: String,
-    val displayName: String
+    val displayName: String,
+    val lastName : String,
+    val userMail : String
 )

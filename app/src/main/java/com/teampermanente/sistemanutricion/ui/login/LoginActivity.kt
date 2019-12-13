@@ -15,7 +15,10 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.Toast
 import com.amazonaws.auth.CognitoCachingCredentialsProvider
 import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory
 import com.amazonaws.regions.Regions
@@ -42,10 +45,10 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_login)
 
-
         val username = findViewById<EditText>(R.id.username)
         val loginButton = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
+
         val animacion: Animation
         val animacionDos: Animation
 
@@ -86,26 +89,24 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
+
+                //Complete and destroy login activity once successful
+                val toMainIntent = Intent(this, MainActivity::class.java)
+                toMainIntent.putExtra("idUsuario", username.text.toString())
+                toMainIntent.putExtra("username", loginResult.success.displayName)
+                toMainIntent.putExtra("userLastName", loginResult.success.lastName)
+                toMainIntent.putExtra("userMail", loginResult.success.userMail)
+                startActivity(toMainIntent)
+
+                loading.visibility = View.GONE
+                finish()
             }
             setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-
-
-                        val toMainIntent = Intent(baseContext, MainActivity::class.java)
-                        startActivity(toMainIntent)
-                        finish()
-
-
-
-
-
         })
 
         username.apply {
@@ -115,9 +116,9 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
 
-            setOnEditorActionListener { _, actionId, _ ->
+            setOnEditorActionListener {_, actionId, _ ->
                 when (actionId) {
-                    EditorInfo.IME_ACTION_DONE -> loginViewModel.login(username.text.toString())
+                    EditorInfo.IME_ACTION_DONE -> loginViewModel.login(username.text.toString(), this@LoginActivity)
                 }
 
                 false
@@ -125,28 +126,10 @@ class LoginActivity : AppCompatActivity() {
 
             loginButton.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString())
+
+                loginViewModel.login(username.text.toString(), this@LoginActivity)
             }
         }
-
-        // Instantiate the RequestQueue.
-        val queue = Volley.newRequestQueue(this)
-        val url =
-            "https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerexpediente?expedienteId=dad12"
-
-        // Request a string response from the provided URL.
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> { response ->
-
-                if (response != "[]") {
-                    Log.d("Nose", response)
-                }
-            },
-            Response.ErrorListener { Log.d("Node", "Error rasa") })
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest)
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
