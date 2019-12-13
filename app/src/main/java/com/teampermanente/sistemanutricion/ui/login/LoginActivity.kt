@@ -63,7 +63,6 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
@@ -73,8 +72,10 @@ class LoginActivity : AppCompatActivity() {
                 //Complete and destroy login activity once successful
                 val toMainIntent = Intent(this, MainActivity::class.java)
                 toMainIntent.putExtra("idUsuario", username.text.toString())
+                toMainIntent.putExtra("username", loginResult.success.displayName)
                 startActivity(toMainIntent)
 
+                loading.visibility = View.GONE
                 finish()
             }
             setResult(Activity.RESULT_OK)
@@ -98,19 +99,7 @@ class LoginActivity : AppCompatActivity() {
             loginButton.setOnClickListener {
                 loading.visibility = View.VISIBLE
 
-                val usernameValue = username.text.toString()
-                val queue = Volley.newRequestQueue(this@LoginActivity)
-                val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerexpediente?expedienteId=$usernameValue")
-
-                // Request a string response from the provided URL.
-                 val stringRequest = StringRequest(
-                    Request.Method.GET, url,
-                    Response.Listener<String> { response ->
-                        loginViewModel.handleLoginResponse(response)
-                    },
-                    Response.ErrorListener { Log.d("Node", "Error rasa") }
-                )
-                queue.add(stringRequest)
+                loginViewModel.login(username.text.toString(), this@LoginActivity)
             }
         }
     }

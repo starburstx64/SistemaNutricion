@@ -29,6 +29,7 @@ class HomeFragment : Fragment() {
     private lateinit var performanceSpinner : Spinner
     private lateinit var sessionSpinner : Spinner
 
+    private lateinit var userNameTextView: TextView
     private lateinit var imcTextView: TextView
     private lateinit var sessionIMC: TextView
     private lateinit var sessionWeight: TextView
@@ -53,6 +54,9 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(this, Observer {
             textView.text = it
         })*/
+
+        userNameTextView = root.findViewById(R.id.home_textview_username) as TextView
+        userNameTextView.text = model.username
 
         imcTextView = root.findViewById(R.id.home_textview_imc) as TextView
         sessionIMC = root.findViewById(R.id.home_textview_sessionIMC) as TextView

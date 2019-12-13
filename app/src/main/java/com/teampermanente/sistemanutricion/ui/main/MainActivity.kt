@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         model.idUsuario = intent.getStringExtra("idUsuario")!!
+        model.username = intent.getStringExtra("username")!!
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

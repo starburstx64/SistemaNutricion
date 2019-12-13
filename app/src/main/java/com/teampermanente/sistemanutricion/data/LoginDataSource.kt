@@ -8,6 +8,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.teampermanente.sistemanutricion.data.model.LoggedInUser
 import com.teampermanente.sistemanutricion.ui.login.LoginViewModel
+import org.json.JSONArray
 import java.lang.Exception
 
 /**
@@ -29,8 +30,11 @@ class LoginDataSource {
                 Response.Listener<String> { response ->
 
                     if (response != "[]") {
-                        callback1.onCallback(Result.Success(LoggedInUser("1", "David Segovia")))
-                        callback2.onCallback(Result.Success(LoggedInUser("1", "David Segovia")))
+
+                        val jsonObject = JSONArray(response).getJSONObject(0)
+
+                        callback1.onCallback(Result.Success(LoggedInUser(jsonObject.getString("clave"), jsonObject.getString("nombre"))))
+                        callback2.onCallback(Result.Success(LoggedInUser(jsonObject.getString("clave"), jsonObject.getString("nombre"))))
                     }
 
                     else {
