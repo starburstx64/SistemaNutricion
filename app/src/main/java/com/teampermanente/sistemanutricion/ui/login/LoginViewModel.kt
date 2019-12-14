@@ -35,7 +35,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             override fun onCallback(loginResult: Result<LoggedInUser>) {
                 if (loginResult is Result.Success) {
                     _loginResult.value =
-                        LoginResult(success = LoggedInUserView(displayName = loginResult.data.displayName))
+                        LoginResult(success = LoggedInUserView(displayName = loginResult.data.displayName,
+                            lastName = loginResult.data.lastName, userMail = loginResult.data.userMail))
                 }
 
                 else {

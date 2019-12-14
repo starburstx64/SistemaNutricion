@@ -5,6 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1A304D"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -18,19 +19,20 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="252dp"
         android:layout_marginEnd="24dp"
-
+        android:background="@drawable/style_borde_editext"
         android:hint="@string/prompt_caseFile_key"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
+        android:textColor="#ffffff"
+        android:textColorHint="@color/cardview_light_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/login"
-        android:background="@color/colorOrange"
-        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -38,13 +40,16 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
+        android:background="@drawable/style_borde_button"
         android:enabled="false"
         android:text="@string/action_sign_in"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintVertical_bias="0.2" />
+
 
     <ProgressBar
         android:id="@+id/loading"
@@ -64,11 +69,13 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="289dp"
+        android:layout_height="174dp"
+        android:background="@drawable/style_border_image"
+        android:contentDescription="@string/todo"
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@mipmap/ic_launcher_round" />
+        app:srcCompat="@mipmap/ic_logo_foreground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

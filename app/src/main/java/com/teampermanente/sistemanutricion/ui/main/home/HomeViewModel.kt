@@ -13,4 +13,6 @@ class HomeViewModel : ViewModel() {
 
     var idUsuario : String = "dad12"
     var username : String = ""
+    var userLastName : String = ""
+    var userMail : String = ""
 }

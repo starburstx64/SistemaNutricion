@@ -12,6 +12,8 @@ import android.text.TextWatcher
 import android.util.JsonReader
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
@@ -30,6 +32,7 @@ import com.google.gson.JsonParser
 import com.teampermanente.sistemanutricion.R
 import com.teampermanente.sistemanutricion.clientsdk.NutriologoQuerysClient
 import com.teampermanente.sistemanutricion.ui.main.MainActivity
+import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -45,6 +48,29 @@ class LoginActivity : AppCompatActivity() {
         val username = findViewById<EditText>(R.id.username)
         val loginButton = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
+
+        val animacion: Animation
+        val animacionDos: Animation
+
+        animacion = AnimationUtils.loadAnimation(this, R.anim.animacion_top)
+        animacionDos = AnimationUtils.loadAnimation(this, R.anim.animacion_button)
+
+        imageView2.animation = animacion
+        username.animation = animacion
+        login.animation = animacionDos
+        val background = object : Thread() {
+            override fun run() {
+                super.run()
+
+                try {
+                    sleep((3 * 1000).toLong())
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        background.start()
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -74,6 +100,8 @@ class LoginActivity : AppCompatActivity() {
                 val toMainIntent = Intent(this, MainActivity::class.java)
                 toMainIntent.putExtra("idUsuario", username.text.toString())
                 toMainIntent.putExtra("username", loginResult.success.displayName)
+                toMainIntent.putExtra("userLastName", loginResult.success.lastName)
+                toMainIntent.putExtra("userMail", loginResult.success.userMail)
                 startActivity(toMainIntent)
 
                 finish()

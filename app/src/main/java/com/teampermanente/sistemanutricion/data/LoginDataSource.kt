@@ -32,9 +32,11 @@ class LoginDataSource {
                     if (response != "[]") {
 
                         val jsonObject = JSONArray(response).getJSONObject(0)
+                        val lastName = jsonObject.getString("Apellidos")
+                        val mail = jsonObject.getString("correo")
 
-                        callback1.onCallback(Result.Success(LoggedInUser(jsonObject.getString("clave"), jsonObject.getString("nombre"))))
-                        callback2.onCallback(Result.Success(LoggedInUser(jsonObject.getString("clave"), jsonObject.getString("nombre"))))
+                        callback1.onCallback(Result.Success(LoggedInUser(jsonObject.getString("clave"), jsonObject.getString("nombre"), lastName, mail)))
+                        callback2.onCallback(Result.Success(LoggedInUser(jsonObject.getString("clave"), jsonObject.getString("nombre"), lastName, mail)))
                     }
 
                     else {
