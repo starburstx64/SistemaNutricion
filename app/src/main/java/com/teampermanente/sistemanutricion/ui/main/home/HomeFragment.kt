@@ -19,6 +19,7 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.teampermanente.sistemanutricion.R
 import org.json.JSONArray
 
@@ -76,7 +77,7 @@ class HomeFragment : Fragment() {
         val entries2 = listOf(Entry(5f, 15f), Entry(20f, 25f))
 
         imcLineChart = root.findViewById(R.id.home_lineChart_imc) as LineChart
-        imcLineChart.data = LineData(LineDataSet(entries, "Peso"), LineDataSet(entries2, "Sesiones"))
+        imcLineChart.data = LineData(LineDataSet(entries, "Peso") as ILineDataSet?, LineDataSet(entries2, "Sesiones"))
 
         updateStatistics()
 
@@ -117,7 +118,7 @@ class HomeFragment : Fragment() {
                     }
                 }
 
-                setQurrentIMC(numSessions)
+                setCurrentIMC(numSessions)
             },
             Response.ErrorListener { Log.d("Node", "Error rasa") }
         )
@@ -127,7 +128,8 @@ class HomeFragment : Fragment() {
 
     fun updateStatistics() {
         val queue = Volley.newRequestQueue(context)
-        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=${model.idUsuario}&idSeguimiento=$selectedSession")
+        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=" +
+                "${model.idUsuario}&idSeguimiento=$selectedSession")
 
         // Request a string response from the provided URL.
         val stringRequest = StringRequest(
@@ -157,9 +159,9 @@ class HomeFragment : Fragment() {
         queue.add(stringRequest)
     }
 
-    fun setQurrentIMC(idSession : Int) {
+    private fun setCurrentIMC(idSession : Int) {
         val queue = Volley.newRequestQueue(context)
-        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=${model.idUsuario}&idSeguimiento=$idSession")
+        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerultimoseguimiento?expedienteId=${model.idUsuario}")
 
         // Request a string response from the provided URL.
         val stringRequest = StringRequest(
