@@ -45,18 +45,18 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_login)
 
-        val username = findViewById<EditText>(R.id.username)
+        val username = findViewById<EditText>(R.id.clave)
         val loginButton = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
 
         val animacion: Animation
         val animacionDos: Animation
 
-        animacion = AnimationUtils.loadAnimation(this, R.anim.animacion_top)
+        animacion = AnimationUtils.loadAnimation(this, R.anim.animacion_right)
         animacionDos = AnimationUtils.loadAnimation(this, R.anim.animacion_button)
 
-        imageView2.animation = animacion
-        username.animation = animacion
+        //imageView2.animation = animacion
+        textInputLayout_emailLogin1.animation = animacion
         login.animation = animacionDos
         val background = object : Thread() {
             override fun run() {
