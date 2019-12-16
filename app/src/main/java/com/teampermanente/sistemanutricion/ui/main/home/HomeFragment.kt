@@ -1,37 +1,33 @@
 package com.teampermanente.sistemanutricion.ui.main.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.teampermanente.sistemanutricion.R
-import org.json.JSONArray
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
+
+    private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var scrollView: ScrollView
+
     private lateinit var imcLineChart : LineChart
     private lateinit var performanceSpinner : Spinner
     private lateinit var sessionSpinner : Spinner
-
     private lateinit var userNameTextView: TextView
     private lateinit var imcTextView: TextView
     private lateinit var sessionIMC: TextView
@@ -40,8 +36,11 @@ class HomeFragment : Fragment() {
     private lateinit var sessionWaist: TextView
     private lateinit var sessionHip: TextView
     private lateinit var sessionBrachial: TextView
-
-    private var selectedSession = 1
+    private lateinit var sessionPercentWater: TextView
+    private lateinit var sessionMuneca: TextView
+    private lateinit var sessionMasaMagra: TextView
+    private lateinit var sessionMasaGrasa: TextView
+    private lateinit var sessionDate: TextView
 
     private val model by lazy { ViewModelProviders.of(activity!!).get(HomeViewModel::class.java) }
 
@@ -53,10 +52,9 @@ class HomeFragment : Fragment() {
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-/*        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(this, Observer {
-            textView.text = it
-        })*/
+
+        scrollView = root.findViewById(R.id.scrollView2) as ScrollView
+        loadingProgressBar = root.findViewById(R.id.loading) as ProgressBar
 
         userNameTextView = root.findViewById(R.id.home_textview_username) as TextView
         userNameTextView.text = model.username
@@ -68,12 +66,28 @@ class HomeFragment : Fragment() {
         sessionWaist = root.findViewById(R.id.home_textview_sessionWaist) as TextView
         sessionHip = root.findViewById(R.id.home_textview_sessionHip) as TextView
         sessionBrachial = root.findViewById(R.id.home_textview_sessionBrachial) as TextView
+        sessionPercentWater = root.findViewById(R.id.home_textview_sessionPercentWater) as TextView
+        sessionMuneca = root.findViewById(R.id.home_textview_sessionMuneca) as TextView
+        sessionMasaMagra = root.findViewById(R.id.home_textview_sessionMasaMagra) as TextView
+        sessionMasaGrasa = root.findViewById(R.id.home_textview_sessionMasaGrasa) as TextView
+        sessionDate = root.findViewById(R.id.home_textview_sessionDate) as TextView
 
-        val performanceArrayList = listOf("Peso")
+        val performanceArrayList = listOf("Peso", "IMC", "Circ. Cintura", "Circ. Cadera", "Circ. Braquial",
+            "Circ. Muñeca", "% Grasa", "% Agua", "Masa Magra", "Masa Grasa")
+
         val performanceAdapter = ArrayAdapter<String>(root.context, android.R.layout.simple_spinner_item, performanceArrayList)
         performanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         performanceSpinner = root.findViewById(R.id.home_spinner_performance) as Spinner
         performanceSpinner.adapter = performanceAdapter
+        performanceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                updateChart(p2, performanceArrayList[p2])
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        }
 
         imcLineChart = root.findViewById(R.id.home_lineChart_imc) as LineChart
 
@@ -82,48 +96,24 @@ class HomeFragment : Fragment() {
             val sessions = it ?: return@Observer
 
             if (sessions.isNotEmpty()) {
-                val lastSession = sessions[0]
 
                 val twoDigits = "%.2f"
-                Log.d("Test", twoDigits.format(lastSession.imc).toDouble().toString())
+                imcTextView.text = twoDigits.format(sessions[0].imc)
 
-                sessionIMC.text = getString(R.string.session_imc, twoDigits.format(lastSession.imc))
-                sessionWeight.text = getString(R.string.session_peso, twoDigits.format(lastSession.peso))
-                sessionPercent.text = getString(R.string.session_porGrasa, twoDigits.format(lastSession.porcGrasa))
-                sessionWaist.text = getString(R.string.session_circCintura, twoDigits.format(lastSession.circCintura))
-                sessionHip.text = getString(R.string.session_circCadera, twoDigits.format(lastSession.circCadera))
-                sessionBrachial.text = getString(R.string.session_circBraquial, twoDigits.format(lastSession.circBraquial))
-            }
-        })
+                updateStatistics(sessions[0])
 
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /*val queue = Volley.newRequestQueue(view.context)
-        val url = "https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/numerosesiones?expedienteId=${model.idUsuario}"
-        // Request a string response from the provided URL.
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> { response ->
-
-                val numSessions = JSONArray(response).getJSONObject(0).getString("numeroDeSeguimientos").toInt()
                 val sessionsList = mutableListOf<String>()
-
-                for (i in 0 until numSessions) {
-                    sessionsList.add("Sesion ${i + 1}")
+                for (i in sessions.indices) {
+                    sessionsList.add("Sesion ${sessions[i].id}")
                 }
 
-                val sessionAdapter = ArrayAdapter<String>(view.context, android.R.layout.simple_spinner_item, sessionsList)
+                val sessionAdapter = ArrayAdapter<String>(root.context, android.R.layout.simple_spinner_item, sessionsList)
                 sessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                sessionSpinner = view.findViewById(R.id.home_spinner_session) as Spinner
+                sessionSpinner = root.findViewById(R.id.home_spinner_session) as Spinner
                 sessionSpinner.adapter = sessionAdapter
                 sessionSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                        selectedSession = p2 + 1
-                        updateStatistics()
+                        updateStatistics(sessions[p2])
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -131,69 +121,85 @@ class HomeFragment : Fragment() {
                     }
                 }
 
-                setCurrentIMC(numSessions)
-            },
-            Response.ErrorListener { Log.d("Node", "Error rasa") }
-        )
+                loadingProgressBar.visibility = View.GONE
+                scrollView.visibility = View.VISIBLE
+                updateChart(0, "Peso")
+            }
+        })
 
-        queue.add(stringRequest)*/
+        return root
     }
 
-    private fun updateStatistics() {
-        val queue = Volley.newRequestQueue(context)
-        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=" +
-                "${model.idUsuario}&idSeguimiento=$selectedSession")
+    private fun updateStatistics(session : HomeViewModel.Session) {
 
-        // Request a string response from the provided URL.
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> { response ->
+        val twoDigits = "%.2f"
+        sessionIMC.text = getString(R.string.session_imc, twoDigits.format(session.imc))
+        sessionWeight.text = getString(R.string.session_peso, twoDigits.format(session.peso))
+        sessionPercent.text = getString(R.string.session_porGrasa, twoDigits.format(session.porcGrasa))
+        sessionWaist.text = getString(R.string.session_circCintura, twoDigits.format(session.circCintura))
+        sessionHip.text = getString(R.string.session_circCadera, twoDigits.format(session.circCadera))
+        sessionBrachial.text = getString(R.string.session_circBraquial, twoDigits.format(session.circBraquial))
+        sessionMuneca.text = getString(R.string.session_circMuneca, twoDigits.format(session.circMuneca))
+        sessionPercentWater.text = getString(R.string.session_porWater, twoDigits.format(session.porcAgua))
+        sessionMasaMagra.text = getString(R.string.session_masaMagra, twoDigits.format(session.masaMagra))
+        sessionMasaGrasa.text = getString(R.string.session_masaGrasa, twoDigits.format(session.masaGrasa))
 
-                val jsonArray = JSONArray(response)
-                val jsonObject = jsonArray.getJSONObject(0)
+        val simpleDate = session.fechaSesion.split("T")[0]
+        val dateParts = simpleDate.split("-")
 
-                val imc = jsonObject.getString("imc")
-                val peso = jsonObject.getString("peso")
-                val grasa = jsonObject.getString("porGrasa")
-                val cintura = jsonObject.getString("cCintura")
-                val cadera = jsonObject.getString("cCadera")
-                val braquial = jsonObject.getString("cBraquial")
+        val year = dateParts[0]
+        val month = dateParts[1]
+        val day = dateParts[2]
 
-                //imcTextView.text = jsonObject.getString("imc")
-                sessionIMC.text = "IMC: $imc"
-                sessionWeight.text = "Peso: $peso kg"
-                sessionPercent.text = "Porcentaje de grasa: $grasa %"
-                sessionWaist.text = "Circunferencia de cintura: $cintura cm"
-                sessionHip.text = "Circunferencia de cadera: $cadera cm"
-                sessionBrachial.text = "Circunferencia braquial: $braquial cm"
-            },
-            Response.ErrorListener { Log.d("Node", "Error rasa") }
-        )
-        queue.add(stringRequest)
+        val months = listOf("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto",
+                            "Septiembre", "Octubre", "Noviembre", "Diciembre")
+
+        sessionDate.text = "$day de ${months[month.toInt() - 1]}, $year"
     }
 
-    private fun setCurrentIMC(idSession : Int) {
-        val queue = Volley.newRequestQueue(context)
-        val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerultimoseguimiento?expedienteId=${model.idUsuario}")
+    private fun updateChart(selectedIndex : Int, entryName : String) {
 
-        // Request a string response from the provided URL.
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> { response ->
+        val entries = mutableListOf<Entry>()
 
-                val jsonArray = JSONArray(response)
-                val jsonObject = jsonArray.getJSONObject(0)
+        var currentSession = 1
+        val sessionQuarters = mutableListOf<String>()
+        for (session in model.sessionsList.value!!.reversed()) {
 
-                imcTextView.text = jsonObject.getString("imc")
-            },
-            Response.ErrorListener { Log.d("Node", "Error rasa") }
-        )
-        queue.add(stringRequest)
-    }
+            val sessionData = when (selectedIndex) {
+                0 -> session.peso
+                1 -> session.imc
+                2 -> session.circCintura
+                3 -> session.circCadera
+                4 -> session.circBraquial
+                5 -> session.circMuneca
+                6 -> session.porcGrasa
+                7 -> session.porcAgua
+                8 -> session.masaMagra
+                9 -> session.masaGrasa
 
-    private fun updateChart() {
-        val entries = listOf(Entry(0f, 5f), Entry(10f, 15f))
-        val entries2 = listOf(Entry(5f, 15f), Entry(20f, 25f))
-        imcLineChart.data = LineData(LineDataSet(entries, "Peso") as ILineDataSet?, LineDataSet(entries2, "Sesiones"))
+                else -> session.peso
+            }
+
+            entries.add(Entry(currentSession.toFloat() - 1, sessionData.toFloat()))
+            sessionQuarters.add("Sesion $currentSession")
+            currentSession++
+        }
+
+        val lineDataSet = LineDataSet(entries, entryName)
+        lineDataSet.axisDependency = YAxis.AxisDependency.LEFT
+        lineDataSet.valueTextSize = 10f
+
+        val valueFormatter = object : ValueFormatter() {
+            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                return sessionQuarters[value.toInt()]
+            }
+        }
+
+        val xAxis = imcLineChart.xAxis
+        xAxis.granularity = 1f
+        xAxis.valueFormatter = valueFormatter
+
+        imcLineChart.data = LineData(lineDataSet)
+        imcLineChart.invalidate()
     }
 }

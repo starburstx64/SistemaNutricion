@@ -35,4 +35,8 @@
     <string name="session_circCintura">Circunferencia de cintura: %1s cm.</string>
     <string name="session_circCadera">Circunferencia de cadera: %1s cm.</string>
     <string name="session_circBraquial">Circunferencia braquial: %1s cm.</string>
+    <string name="session_circMuneca">Cincunferencia muñeca: %1s cm.</string>
+    <string name="session_porWater">Porcentaje de agua: %1s %%</string>
+    <string name="session_masaMagra">Masa magra: %1s Kg.</string>
+    <string name="session_masaGrasa">Masa grasa: %1s Kg.</string>
 </resources>

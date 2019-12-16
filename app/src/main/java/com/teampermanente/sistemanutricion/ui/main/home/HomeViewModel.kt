@@ -10,8 +10,6 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
 class HomeViewModel : ViewModel() {
 
@@ -84,7 +82,7 @@ class HomeViewModel : ViewModel() {
             _sessionsList.value = sessions.toList()
 
         }, Response.ErrorListener {
-            Log.d("ERROR", "${it.message}")
+            Log.e("ERROR", "${it.message}")
         })
 
         queue.add(stringRequest)
