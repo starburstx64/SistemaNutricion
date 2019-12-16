@@ -12,24 +12,28 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".ui.login.LoginActivity">
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="252dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/style_borde_editext"
-        android:hint="@string/prompt_caseFile_key"
-        android:inputType="textEmailAddress"
-        android:selectAllOnFocus="true"
-        android:textColor="#ffffff"
-        android:textColorHint="@color/cardview_light_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.093"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="" />
+<!--    <EditText-->
+<!--        android:id="@+id/username"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="24dp"-->
+<!--        android:layout_marginTop="252dp"-->
+<!--        android:layout_marginEnd="24dp"-->
+<!--        android:background="@drawable/style_borde_editext"-->
+<!--        android:hint="@string/prompt_caseFile_key"-->
+<!--        android:inputType="textEmailAddress"-->
+<!--        android:scrollbars="vertical"-->
+<!--        android:selectAllOnFocus="true"-->
+<!--        android:textColor="#ffffff"-->
+<!--        android:textColorHint="@color/cardview_light_background"-->
+<!--        android:textIsSelectable="false"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.093"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:textColorHighlight="@color/colorOrangeDark"-->
+<!--        />-->
 
     <Button
         android:id="@+id/login"
@@ -47,7 +51,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_emailLogin1"
         app:layout_constraintVertical_bias="0.2" />
 
 
@@ -62,8 +66,8 @@
         android:layout_marginBottom="64dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/username"
-        app:layout_constraintStart_toStartOf="@+id/username"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout_emailLogin1"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout_emailLogin1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
@@ -73,9 +77,31 @@
         android:layout_height="174dp"
         android:background="@drawable/style_border_image"
         android:contentDescription="@string/todo"
-        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout_emailLogin1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_logo_foreground" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_emailLogin1"
+        style="@style/CustomInputTextLayoutDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="Clave De Usuario"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/clave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="#ffffff"
+            android:textStyle="bold"/>
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

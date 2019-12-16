@@ -26,6 +26,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 
@@ -45,18 +46,18 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_login)
 
-        val username = findViewById<EditText>(R.id.username)
+        val username = findViewById<EditText>(R.id.clave)
         val loginButton = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
 
         val animacion: Animation
         val animacionDos: Animation
 
-        animacion = AnimationUtils.loadAnimation(this, R.anim.animacion_top)
+        animacion = AnimationUtils.loadAnimation(this, R.anim.animacion_right)
         animacionDos = AnimationUtils.loadAnimation(this, R.anim.animacion_button)
 
-        imageView2.animation = animacion
-        username.animation = animacion
+        //imageView2.animation = animacion
+        textInputLayout_emailLogin1.animation = animacion
         login.animation = animacionDos
         val background = object : Thread() {
             override fun run() {
@@ -126,8 +127,16 @@ class LoginActivity : AppCompatActivity() {
 
             loginButton.setOnClickListener {
                 loading.visibility = View.VISIBLE
+                if(username.text.isNotEmpty()){
 
-                loginViewModel.login(username.text.toString(), this@LoginActivity)
+                    loginViewModel.login(username.text.toString(), this@LoginActivity)
+
+                }else{
+                    Snackbar.make(it,"Campo Vacio,LLenelo.",Snackbar.LENGTH_LONG).show()
+
+                }
+
+
             }
         }
     }
