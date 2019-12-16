@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.android.volley.Request
 import com.android.volley.Response
@@ -73,13 +75,26 @@ class HomeFragment : Fragment() {
         performanceSpinner = root.findViewById(R.id.home_spinner_performance) as Spinner
         performanceSpinner.adapter = performanceAdapter
 
-        val entries = listOf(Entry(0f, 5f), Entry(10f, 15f))
-        val entries2 = listOf(Entry(5f, 15f), Entry(20f, 25f))
-
         imcLineChart = root.findViewById(R.id.home_lineChart_imc) as LineChart
-        imcLineChart.data = LineData(LineDataSet(entries, "Peso") as ILineDataSet?, LineDataSet(entries2, "Sesiones"))
 
-        updateStatistics()
+        model.getSessionsData(root.context)
+        model.sessionsList.observe(activity as LifecycleOwner, Observer {
+            val sessions = it ?: return@Observer
+
+            if (sessions.isNotEmpty()) {
+                val lastSession = sessions[0]
+
+                val twoDigits = "%.2f"
+                Log.d("Test", twoDigits.format(lastSession.imc).toDouble().toString())
+
+                sessionIMC.text = getString(R.string.session_imc, twoDigits.format(lastSession.imc))
+                sessionWeight.text = getString(R.string.session_peso, twoDigits.format(lastSession.peso))
+                sessionPercent.text = getString(R.string.session_porGrasa, twoDigits.format(lastSession.porcGrasa))
+                sessionWaist.text = getString(R.string.session_circCintura, twoDigits.format(lastSession.circCintura))
+                sessionHip.text = getString(R.string.session_circCadera, twoDigits.format(lastSession.circCadera))
+                sessionBrachial.text = getString(R.string.session_circBraquial, twoDigits.format(lastSession.circBraquial))
+            }
+        })
 
         return root
     }
@@ -87,9 +102,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("Test", model.idUsuario)
-
-        val queue = Volley.newRequestQueue(view.context)
+        /*val queue = Volley.newRequestQueue(view.context)
         val url = "https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/numerosesiones?expedienteId=${model.idUsuario}"
         // Request a string response from the provided URL.
         val stringRequest = StringRequest(
@@ -123,10 +136,10 @@ class HomeFragment : Fragment() {
             Response.ErrorListener { Log.d("Node", "Error rasa") }
         )
 
-        queue.add(stringRequest)
+        queue.add(stringRequest)*/
     }
 
-    fun updateStatistics() {
+    private fun updateStatistics() {
         val queue = Volley.newRequestQueue(context)
         val url = String.format("https://qpnwxks3e9.execute-api.us-east-1.amazonaws.com/Dev/obtenerseguimiento?expedienteId=" +
                 "${model.idUsuario}&idSeguimiento=$selectedSession")
@@ -176,5 +189,11 @@ class HomeFragment : Fragment() {
             Response.ErrorListener { Log.d("Node", "Error rasa") }
         )
         queue.add(stringRequest)
+    }
+
+    private fun updateChart() {
+        val entries = listOf(Entry(0f, 5f), Entry(10f, 15f))
+        val entries2 = listOf(Entry(5f, 15f), Entry(20f, 25f))
+        imcLineChart.data = LineData(LineDataSet(entries, "Peso") as ILineDataSet?, LineDataSet(entries2, "Sesiones"))
     }
 }
