@@ -1,6 +1,8 @@
 package com.teampermanente.sistemanutricion.ui.main.home
 
+import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.teampermanente.sistemanutricion.R
+import com.teampermanente.sistemanutricion.ui.main.ChartActivity
 
 class HomeFragment : Fragment() {
 
@@ -42,6 +45,10 @@ class HomeFragment : Fragment() {
     private lateinit var sessionMasaMagra: TextView
     private lateinit var sessionMasaGrasa: TextView
     private lateinit var sessionDate: TextView
+
+    private val entriesForIntent = mutableListOf<Pair<Float, Float>>()
+    private var sessionQuartersForIntent = mutableListOf<String>()
+    private var entryNameForIntent = ""
 
     private val model by lazy { ViewModelProviders.of(activity!!).get(HomeViewModel::class.java) }
 
@@ -91,6 +98,18 @@ class HomeFragment : Fragment() {
         }
 
         imcLineChart = root.findViewById(R.id.home_lineChart_imc) as LineChart
+        imcLineChart.setOnClickListener {
+
+            if (imcLineChart.data == null) {
+                return@setOnClickListener
+            }
+
+            val toLineChartIntent = Intent(root.context, ChartActivity::class.java)
+            toLineChartIntent.putExtra("entries", entriesForIntent.toTypedArray())
+            toLineChartIntent.putExtra("sessionQuartets", sessionQuartersForIntent.toTypedArray())
+            toLineChartIntent.putExtra("entryName", entryNameForIntent)
+            startActivity(toLineChartIntent)
+        }
 
         model.getSessionsData(root.context)
         model.sessionsList.observe(activity as LifecycleOwner, Observer {
@@ -170,6 +189,10 @@ class HomeFragment : Fragment() {
             return
         }
 
+        entriesForIntent.clear()
+        sessionQuartersForIntent.clear()
+        entryNameForIntent = entryName
+
         val entries = mutableListOf<Entry>()
 
         var currentSession = 1
@@ -191,10 +214,14 @@ class HomeFragment : Fragment() {
                 else -> session.peso
             }
 
+            entriesForIntent.add(Pair(currentSession.toFloat() - 1, sessionData.toFloat()))
+
             entries.add(Entry(currentSession.toFloat() - 1, sessionData.toFloat()))
             sessionQuarters.add("Sesion $currentSession")
             currentSession++
         }
+
+        sessionQuartersForIntent = sessionQuarters
 
         val lineDataSet = LineDataSet(entries, entryName)
         lineDataSet.axisDependency = YAxis.AxisDependency.LEFT
