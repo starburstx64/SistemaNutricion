@@ -24,6 +24,7 @@ class ChartActivity : AppCompatActivity() {
 
         lineChart = findViewById(R.id.home_lineChart_imc)
 
+        @Suppress("UNCHECKED_CAST")
         val entries = intent.getSerializableExtra("entries") as Array<Pair<Float, Float>>
         val quartets = intent.getStringArrayExtra("sessionQuartets")!!
         val entryName = intent.getStringExtra("entryName")
