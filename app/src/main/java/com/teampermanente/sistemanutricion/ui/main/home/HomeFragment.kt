@@ -1,5 +1,6 @@
 package com.teampermanente.sistemanutricion.ui.main.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -123,11 +124,18 @@ class HomeFragment : Fragment() {
 
                 loadingProgressBar.visibility = View.GONE
                 scrollView.visibility = View.VISIBLE
+
                 updateChart(0, "Peso")
             }
         })
 
         return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        model.sessionsList.removeObservers(activity as LifecycleOwner)
     }
 
     private fun updateStatistics(session : HomeViewModel.Session) {
