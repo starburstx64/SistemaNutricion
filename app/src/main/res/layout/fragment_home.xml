@@ -4,163 +4,218 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<ScrollView
-    android:padding="20dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="64dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:gravity="center"
+    <ScrollView
+        android:visibility="invisible"
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:padding="20dp">
 
-        <TextView
-            android:textStyle="bold"
-            android:text="David Segovia"
-            android:id="@+id/home_textview_username"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_marginTop="10dp"
-            android:textSize="18dp"
-            android:textAlignment="center"
-            android:text="IMC Actual:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/home_textview_imc"
-            android:textStyle=""
-            android:text="18"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/home_textview_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="David Segovia"
                 android:textAlignment="center"
-                android:text="Redimiento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <Spinner
-                android:id="@+id/home_spinner_performance"
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/home_lineChart_imc"
-            android:layout_width="match_parent"
-            android:layout_height="183dp"
-            android:layout_marginTop="20dp"/>
-
-        <TextView
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:layout_marginStart="40dp"
-            android:text="Datos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_marginStart="30dp"
-                android:text="Sesión"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <Spinner
-                android:id="@+id/home_spinner_session"
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginStart="30dp"
-            android:layout_gravity="start"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/home_textview_sessionIMC"
-                android:layout_marginTop="10dp"
-                android:text="IMC: 18"
                 android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textStyle="bold"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/home_textview_sessionWeight"
-                android:textSize="15sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Peso: 65kg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:text="IMC Actual:"
+                android:textAlignment="center"
+                android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/home_textview_sessionPercent"
-                android:textSize="15sp"
-                android:text="Porcentaje de grasa: 15%"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/home_textview_imc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="18"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Redimiento"
+                    android:textAlignment="center" />
+
+                <Spinner
+                    android:id="@+id/home_spinner_performance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp" />
+
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/home_lineChart_imc"
+                android:layout_width="match_parent"
+                android:layout_height="327dp"
+                android:layout_marginTop="20dp" />
 
             <TextView
-                android:id="@+id/home_textview_sessionWaist"
-                android:textSize="15sp"
-                android:text="Circunferencia de cintura: 77cm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:text="Datos"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/home_textview_sessionHip"
-                android:textSize="15sp"
-                android:text="Circunferencia de cadera: 83cm"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/home_textview_sessionBrachial"
-                android:textSize="15sp"
-                android:text="Cincunferencia braquial: 24cm"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="Sesión" />
+
+                <Spinner
+                    android:id="@+id/home_spinner_session"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="3 de Junio, 2019"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/home_textview_sessionIMC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="IMC: 18"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Peso: 65kg"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionPercent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Porcentaje de grasa: 15%"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionPercentWater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Porcentaje de agua: 15%"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionWaist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Circunferencia de cintura: 77cm"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionHip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Circunferencia de cadera: 83cm"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionBrachial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Cincunferencia braquial: 24cm"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionMuneca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Cincunferencia muñeca: 34cm"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionMasaMagra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Masa magra: 34kg"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/home_textview_sessionMasaGrasa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Masa grasa: 34kg"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
