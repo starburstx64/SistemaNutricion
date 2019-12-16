@@ -26,6 +26,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 
@@ -126,8 +127,16 @@ class LoginActivity : AppCompatActivity() {
 
             loginButton.setOnClickListener {
                 loading.visibility = View.VISIBLE
+                if(username.text.isNotEmpty()){
 
-                loginViewModel.login(username.text.toString(), this@LoginActivity)
+                    loginViewModel.login(username.text.toString(), this@LoginActivity)
+
+                }else{
+                    Snackbar.make(it,"Campo Vacio,LLenelo.",Snackbar.LENGTH_LONG).show()
+
+                }
+
+
             }
         }
     }
