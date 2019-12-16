@@ -124,7 +124,6 @@ class HomeFragment : Fragment() {
 
                 loadingProgressBar.visibility = View.GONE
                 scrollView.visibility = View.VISIBLE
-
                 updateChart(0, "Peso")
             }
         })
@@ -166,6 +165,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateChart(selectedIndex : Int, entryName : String) {
+
+        if (model.sessionsList.value.isNullOrEmpty()) {
+            return
+        }
 
         val entries = mutableListOf<Entry>()
 
