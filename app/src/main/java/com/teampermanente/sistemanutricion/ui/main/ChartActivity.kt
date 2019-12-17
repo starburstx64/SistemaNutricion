@@ -41,7 +41,9 @@ class ChartActivity : AppCompatActivity() {
 
         val valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return quartets[value.toInt()]
+                return if (value < 0 || value >= quartets.size) "" else {
+                    quartets[value.toInt()]
+                }
             }
         }
 
