@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +22,9 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.teampermanente.sistemanutricion.R
 import com.teampermanente.sistemanutricion.ui.main.ChartActivity
+import java.lang.Exception
 
 class HomeFragment : Fragment() {
-
-    private lateinit var homeViewModel: HomeViewModel
 
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var scrollView: ScrollView
@@ -57,8 +57,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
+
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         scrollView = root.findViewById(R.id.scrollView2) as ScrollView
@@ -136,8 +135,8 @@ class HomeFragment : Fragment() {
                 updateStatistics(sessions[0])
 
                 val sessionsList = mutableListOf<String>()
-                for (i in sessions.indices) {
-                    sessionsList.add("Sesion ${sessions[i].id}")
+                for (i in sessions.indices.reversed()) {
+                    sessionsList.add("Sesion ${i + 1}")
                 }
 
                 val sessionAdapter = ArrayAdapter<String>(root.context, android.R.layout.simple_spinner_item, sessionsList)
@@ -157,6 +156,9 @@ class HomeFragment : Fragment() {
                 loadingProgressBar.visibility = View.GONE
                 scrollView.visibility = View.VISIBLE
                 updateChart(0, "Peso")
+
+                val noSessionsText = root.findViewById(R.id.home_textview_noSessions) as TextView
+                noSessionsText.visibility = View.GONE
             }
         })
 
@@ -242,7 +244,10 @@ class HomeFragment : Fragment() {
 
         val valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return sessionQuarters[value.toInt()]
+
+                return if (value < 0 || value >= sessionQuarters.size) "" else {
+                    sessionQuarters[value.toInt()]
+                }
             }
         }
 

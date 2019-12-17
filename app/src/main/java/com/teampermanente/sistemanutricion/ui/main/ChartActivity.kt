@@ -24,6 +24,7 @@ class ChartActivity : AppCompatActivity() {
 
         lineChart = findViewById(R.id.home_lineChart_imc)
 
+        @Suppress("UNCHECKED_CAST")
         val entries = intent.getSerializableExtra("entries") as Array<Pair<Float, Float>>
         val quartets = intent.getStringArrayExtra("sessionQuartets")!!
         val entryName = intent.getStringExtra("entryName")
@@ -40,7 +41,9 @@ class ChartActivity : AppCompatActivity() {
 
         val valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return quartets[value.toInt()]
+                return if (value < 0 || value >= quartets.size) "" else {
+                    quartets[value.toInt()]
+                }
             }
         }
 

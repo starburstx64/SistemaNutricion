@@ -39,4 +39,5 @@
     <string name="session_porWater">Porcentaje de agua: %1s %%</string>
     <string name="session_masaMagra">Masa magra: %1s Kg.</string>
     <string name="session_masaGrasa">Masa grasa: %1s Kg.</string>
+    <string name="no_sessions_message">No hay sesiones disponibles. Por favor contacte a su nutriologo.</string>
 </resources>

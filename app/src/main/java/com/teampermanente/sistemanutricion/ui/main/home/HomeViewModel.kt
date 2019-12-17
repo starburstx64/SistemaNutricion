@@ -50,36 +50,35 @@ class HomeViewModel : ViewModel() {
         val stringRequest = StringRequest(Request.Method.GET, url, Response.Listener<String> {
             response ->
 
-            if (response == "[]") {
-                return@Listener
+            if (response != "[]") {
+
+                val sessionsArray = JSONArray(response)
+                val sessions = mutableListOf<Session>()
+
+                for (i in 0 until sessionsArray.length()) {
+                    val jsonObject = sessionsArray.getJSONObject(i)
+
+                    val session = Session(
+                        id = jsonObject.getInt("idSeguimiento"),
+                        numSession = jsonObject.getInt("idSeguimiento"),
+                        peso = jsonObject.getDouble("peso"),
+                        imc = jsonObject.getDouble("imc"),
+                        circCintura = jsonObject.getDouble("cCintura"),
+                        circCadera = jsonObject.getDouble("cCadera"),
+                        circBraquial = jsonObject.getDouble("cBraquial"),
+                        circMuneca = jsonObject.getDouble("cMuneca"),
+                        porcGrasa = jsonObject.getDouble("porGrasa"),
+                        porcAgua = jsonObject.getDouble("porAgua"),
+                        masaMagra = jsonObject.getDouble("masaMagra"),
+                        masaGrasa = jsonObject.getDouble("masaGrasa"),
+                        fechaSesion = jsonObject.getString("fechaSesion")
+                    )
+
+                    sessions.add(session)
+                }
+
+                _sessionsList.value = sessions.toList()
             }
-
-            val sessionsArray = JSONArray(response)
-            val sessions = mutableListOf<Session>()
-
-            for (i in 0 until sessionsArray.length()) {
-                val jsonObject = sessionsArray.getJSONObject(i)
-
-                val session = Session(
-                    id = jsonObject.getInt("idSeguimiento"),
-                    numSession = jsonObject.getInt("idSeguimiento"),
-                    peso = jsonObject.getDouble("peso"),
-                    imc = jsonObject.getDouble("imc"),
-                    circCintura = jsonObject.getDouble("cCintura"),
-                    circCadera = jsonObject.getDouble("cCadera"),
-                    circBraquial = jsonObject.getDouble("cBraquial"),
-                    circMuneca = jsonObject.getDouble("cMuneca"),
-                    porcGrasa = jsonObject.getDouble("porGrasa"),
-                    porcAgua = jsonObject.getDouble("porAgua"),
-                    masaMagra = jsonObject.getDouble("masaMagra"),
-                    masaGrasa = jsonObject.getDouble("masaGrasa"),
-                    fechaSesion = jsonObject.getString("fechaSesion")
-                )
-
-                sessions.add(session)
-            }
-
-            _sessionsList.value = sessions.toList()
 
         }, Response.ErrorListener {
             Log.e("ERROR", "${it.message}")
