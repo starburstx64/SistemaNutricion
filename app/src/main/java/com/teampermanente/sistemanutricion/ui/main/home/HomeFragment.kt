@@ -26,8 +26,6 @@ import java.lang.Exception
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
-
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var scrollView: ScrollView
 
@@ -59,8 +57,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
+
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         scrollView = root.findViewById(R.id.scrollView2) as ScrollView
