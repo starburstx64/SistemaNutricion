@@ -83,6 +83,19 @@ class HomeFragment : Fragment() {
         val performanceArrayList = listOf("Peso", "IMC", "Circ. Cintura", "Circ. Cadera", "Circ. Braquial",
             "Circ. Muñeca", "% Grasa", "% Agua", "Masa Magra", "Masa Grasa")
 
+        val perfomanceImgArrayList= listOf(
+            R.drawable.peso_01,
+            R.drawable.imc,
+            R.drawable.body,
+            R.drawable.hip,
+            R.drawable.hip,
+            R.drawable.muneca,
+            R.drawable.grasa,
+            R.drawable.agua,
+            R.drawable.agua,
+            R.drawable.agua
+        )
+
         val performanceAdapter = ArrayAdapter<String>(root.context, android.R.layout.simple_spinner_item, performanceArrayList)
         performanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         performanceSpinner = root.findViewById(R.id.home_spinner_performance) as Spinner
