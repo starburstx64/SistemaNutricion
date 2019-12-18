@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.logoActivity"
-    android:background="#1A304D">
+    android:background="#1A304D"
+    style="@style/AppTheme">
 
     <ImageView
         android:id="@+id/logo"

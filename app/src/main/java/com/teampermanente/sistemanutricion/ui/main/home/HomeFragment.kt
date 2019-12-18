@@ -162,6 +162,8 @@ class HomeFragment : Fragment() {
                 Log.d("Test", "Lista vacia")
                 val noSessionsText = root.findViewById(R.id.home_textview_noSessions) as TextView
                 noSessionsText.visibility = View.VISIBLE
+                val imgSessions= root.findViewById(R.id.imgEmpty)as ImageView
+                imgSessions.visibility = View.VISIBLE
 
                 reloadButton.visibility = View.VISIBLE
             }

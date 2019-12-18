@@ -1,6 +1,7 @@
 package com.teampermanente.sistemanutricion.ui.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -34,12 +35,14 @@ import com.teampermanente.sistemanutricion.R
 import com.teampermanente.sistemanutricion.clientsdk.NutriologoQuerysClient
 import com.teampermanente.sistemanutricion.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var view: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
 
         val animacion: Animation
         val animacionDos: Animation
+
 
         animacion = AnimationUtils.loadAnimation(this, R.anim.animacion_right)
         animacionDos = AnimationUtils.loadAnimation(this, R.anim.animacion_button)
@@ -93,6 +97,7 @@ class LoginActivity : AppCompatActivity() {
             loading.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
+
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
@@ -117,27 +122,32 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
 
-            setOnEditorActionListener {_, actionId, _ ->
+            setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
-                    EditorInfo.IME_ACTION_DONE -> loginViewModel.login(username.text.toString(), this@LoginActivity)
+                    EditorInfo.IME_ACTION_DONE -> loginViewModel.login(
+                        username.text.toString(),
+                        this@LoginActivity
+                    )
                 }
 
                 false
             }
 
             loginButton.setOnClickListener {
+                view = it
                 loading.visibility = View.VISIBLE
-                if(username.text.isNotEmpty()){
+                if (username.text.isNotEmpty()) {
 
                     loginViewModel.login(username.text.toString(), this@LoginActivity)
 
-                }else{
-                    Snackbar.make(it,"Campo Vacio,LLenelo.",Snackbar.LENGTH_LONG).show()
+                } else {
+                    Snackbar.make(it, "Campo Vacio,LLenelo.", Snackbar.LENGTH_LONG).show()
 
                 }
 
 
             }
+
         }
     }
 
@@ -145,15 +155,17 @@ class LoginActivity : AppCompatActivity() {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
         // TODO : initiate successful logged in experience
-        Toast.makeText(
-            applicationContext,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
-        ).show()
+         Toast.makeText(
+             applicationContext,
+             "$welcome $displayName",
+             Toast.LENGTH_LONG
+         ).show()
+
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+       // Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+        Snackbar.make(view,"Clave Incorrecta!! :'(",Snackbar.LENGTH_LONG).show()
     }
 }
 
