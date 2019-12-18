@@ -156,12 +156,20 @@ class HomeFragment : Fragment() {
                 loadingProgressBar.visibility = View.GONE
                 scrollView.visibility = View.VISIBLE
                 updateChart(0, "Peso")
+
+                val noSessionsText = root.findViewById(R.id.home_textview_noSessions) as TextView
+                noSessionsText.visibility = View.GONE
+
+                val imgSessions= root.findViewById(R.id.imgEmpty) as ImageView
+                imgSessions.visibility = View.GONE
+
+                reloadButton.visibility = View.GONE
             }
 
             else {
-                Log.d("Test", "Lista vacia")
                 val noSessionsText = root.findViewById(R.id.home_textview_noSessions) as TextView
                 noSessionsText.visibility = View.VISIBLE
+
                 val imgSessions= root.findViewById(R.id.imgEmpty)as ImageView
                 imgSessions.visibility = View.VISIBLE
 
