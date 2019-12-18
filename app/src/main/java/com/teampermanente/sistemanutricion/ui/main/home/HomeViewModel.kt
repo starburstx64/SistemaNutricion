@@ -80,6 +80,10 @@ class HomeViewModel : ViewModel() {
                 _sessionsList.value = sessions.toList()
             }
 
+            else {
+                _sessionsList.value = listOf()
+            }
+
         }, Response.ErrorListener {
             Log.e("ERROR", "${it.message}")
         })

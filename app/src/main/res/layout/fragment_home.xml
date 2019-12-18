@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/home_root"
+    android:background="@color/colorBlueDark"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -12,10 +15,11 @@
         android:text="@string/no_sessions_message"
         android:textAlignment="center"
         android:textSize="30sp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="@+id/scrollView2" />
 
     <Button
+        android:visibility="gone"
         android:id="@+id/home_button_reload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
