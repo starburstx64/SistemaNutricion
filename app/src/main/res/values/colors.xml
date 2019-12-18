@@ -11,6 +11,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorOrange">#FF3B2F</color>
     <color name="colorOrangeDark">#AA2D25</color>
+    <color name="colorBlueDark">#2C4053</color>
 
     <color name="myColorPrimary">#3CA0D3</color>
     <color name="myColorPrimaryDark">#0969B9</color>

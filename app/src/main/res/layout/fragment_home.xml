@@ -6,13 +6,24 @@
 
     <TextView
         android:id="@+id/home_textview_noSessions"
-        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="@string/no_sessions_message"
         android:textAlignment="center"
         android:textSize="30sp"
-        android:text="@string/no_sessions_message"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@+id/scrollView2" />
+
+    <Button
+        android:id="@+id/home_button_reload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recargar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/home_textview_noSessions"
+        app:layout_constraintStart_toStartOf="@+id/home_textview_noSessions"
+        app:layout_constraintTop_toBottomOf="@+id/home_textview_noSessions" />
 
     <ProgressBar
         android:id="@+id/loading"

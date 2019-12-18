@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorOrange</item>
-        <item name="colorPrimaryDark">@color/colorOrangeDark</item>
+        <item name="colorPrimaryDark">@color/colorBlueDark</item>
         <item name="colorAccent">#ffffff</item>
     </style>
     <style name="CounterTextStyle" parent="@android:style/TextAppearance">
