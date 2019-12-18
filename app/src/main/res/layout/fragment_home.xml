@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imgEmpty"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="270dp"
+        android:layout_height="270dp"
         android:layout_marginBottom="600dp"
         android:src="@drawable/box"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,20 +19,29 @@
     <TextView
         android:id="@+id/home_textview_noSessions"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="500dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/no_sessions_message"
         android:textAlignment="center"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:typeface="serif"
+        android:textSize="20dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgEmpty"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:typeface="serif"/>
+
+    <Button
+        android:id="@+id/home_button_reload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="400dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/style_borde_button"
+        android:gravity="center"
+        android:text="Recargar"
+        app:layout_constraintEnd_toStartOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_textview_noSessions" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -48,11 +58,11 @@
         app:layout_constraintVertical_bias="0.3" />
 
     <ScrollView
+        android:visibility="invisible"
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
-        android:visibility="invisible">
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,10 +78,8 @@
                 android:layout_marginEnd="8dp"
                 android:text="David Segovia"
                 android:textAlignment="center"
-                android:textColor="#8F8F8F"
-                android:textSize="32sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,10 +91,7 @@
                 android:layout_marginTop="10dp"
                 android:text="IMC Actual:"
                 android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:typeface="normal" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/home_textview_imc"
@@ -94,9 +99,8 @@
                 android:layout_height="wrap_content"
                 android:text="18"
                 android:textAlignment="center"
-                android:textColor="#123A4E"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textSize="18sp"
+                android:textStyle="" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -108,10 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Redimiento"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:textStyle="bold"
-                    android:typeface="normal" />
+                    android:textAlignment="center" />
 
                 <Spinner
                     android:id="@+id/home_spinner_performance"
@@ -133,10 +134,8 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="10dp"
                 android:text="Datos"
-                android:textColor="#000000"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="normal" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -148,10 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
-                    android:text="Sesión"
-                    android:textColor="#123A4E"
-                    android:textStyle="bold"
-                    android:textSize="17sp"/>
+                    android:text="Sesión" />
 
                 <Spinner
                     android:id="@+id/home_spinner_session"
@@ -162,12 +158,9 @@
                 <TextView
                     android:id="@+id/home_textview_sessionDate"
                     android:layout_width="match_parent"
-                    android:layout_height="51dp"
+                    android:layout_height="match_parent"
                     android:text="3 de Junio, 2019"
-                    android:textAlignment="center"
-                    android:textColor="#123A4E"
-                    android:textStyle="bold"
-                    android:textSize="12sp"/>
+                    android:textAlignment="center" />
 
             </LinearLayout>
 
@@ -184,8 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="IMC: 18"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/home_textview_sessionWeight"
@@ -193,9 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Peso: 65kg"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/home_textview_sessionPercent"
@@ -203,9 +193,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Porcentaje de grasa: 15%"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/home_textview_sessionPercentWater"
@@ -213,9 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Porcentaje de agua: 15%"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/home_textview_sessionWaist"
@@ -223,9 +209,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Circunferencia de cintura: 77cm"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/home_textview_sessionHip"
@@ -233,9 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Circunferencia de cadera: 83cm"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/home_textview_sessionBrachial"
@@ -243,9 +225,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Cincunferencia braquial: 24cm"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/home_textview_sessionMuneca"
@@ -253,9 +233,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Cincunferencia muñeca: 34cm"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/home_textview_sessionMasaMagra"
@@ -263,9 +241,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Masa magra: 34kg"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/home_textview_sessionMasaGrasa"
@@ -273,9 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Masa grasa: 34kg"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 

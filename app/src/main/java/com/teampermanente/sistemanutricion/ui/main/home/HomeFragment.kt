@@ -45,6 +45,7 @@ class HomeFragment : Fragment() {
     private lateinit var sessionMasaMagra: TextView
     private lateinit var sessionMasaGrasa: TextView
     private lateinit var sessionDate: TextView
+    private lateinit var reloadButton: Button
 
     private val entriesForIntent = mutableListOf<Pair<Float, Float>>()
     private var sessionQuartersForIntent = mutableListOf<String>()
@@ -78,6 +79,11 @@ class HomeFragment : Fragment() {
         sessionMasaMagra = root.findViewById(R.id.home_textview_sessionMasaMagra) as TextView
         sessionMasaGrasa = root.findViewById(R.id.home_textview_sessionMasaGrasa) as TextView
         sessionDate = root.findViewById(R.id.home_textview_sessionDate) as TextView
+        reloadButton = root.findViewById(R.id.home_button_reload) as Button
+
+        reloadButton.setOnClickListener {
+            model.getSessionsData(root.context)
+        }
 
         val performanceArrayList = listOf("Peso", "IMC", "Circ. Cintura", "Circ. Cadera", "Circ. Braquial",
             "Circ. Muñeca", "% Grasa", "% Agua", "Masa Magra", "Masa Grasa")
@@ -159,6 +165,10 @@ class HomeFragment : Fragment() {
 
                 val noSessionsText = root.findViewById(R.id.home_textview_noSessions) as TextView
                 noSessionsText.visibility = View.GONE
+                val imgSessions= root.findViewById(R.id.imgEmpty)as ImageView
+                imgSessions.visibility = View.GONE
+
+                reloadButton.visibility = View.GONE
             }
         })
 
