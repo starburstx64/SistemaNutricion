@@ -3,12 +3,14 @@ package com.teampermanente.sistemanutricion.ui.main.home
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -88,19 +90,6 @@ class HomeFragment : Fragment() {
         val performanceArrayList = listOf("Peso", "IMC", "Circ. Cintura", "Circ. Cadera", "Circ. Braquial",
             "Circ. Muñeca", "% Grasa", "% Agua", "Masa Magra", "Masa Grasa")
 
-        val perfomanceImgArrayList= listOf(
-            R.drawable.peso_01,
-            R.drawable.imc,
-            R.drawable.body,
-            R.drawable.hip,
-            R.drawable.hip,
-            R.drawable.muneca,
-            R.drawable.grasa,
-            R.drawable.agua,
-            R.drawable.agua,
-            R.drawable.agua
-        )
-
         val performanceAdapter = ArrayAdapter<String>(root.context, android.R.layout.simple_spinner_item, performanceArrayList)
         performanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         performanceSpinner = root.findViewById(R.id.home_spinner_performance) as Spinner
@@ -133,6 +122,11 @@ class HomeFragment : Fragment() {
         model.sessionsList.observe(activity as LifecycleOwner, Observer {
             val sessions = it ?: return@Observer
 
+            val homeRoot = root.findViewById(R.id.home_root) as ConstraintLayout
+            homeRoot.setBackgroundResource(R.color.secondaryTextColor)
+
+            loadingProgressBar.visibility = View.GONE
+
             if (sessions.isNotEmpty()) {
 
                 val twoDigits = "%.2f"
@@ -162,13 +156,16 @@ class HomeFragment : Fragment() {
                 loadingProgressBar.visibility = View.GONE
                 scrollView.visibility = View.VISIBLE
                 updateChart(0, "Peso")
+            }
 
+            else {
+                Log.d("Test", "Lista vacia")
                 val noSessionsText = root.findViewById(R.id.home_textview_noSessions) as TextView
-                noSessionsText.visibility = View.GONE
+                noSessionsText.visibility = View.VISIBLE
                 val imgSessions= root.findViewById(R.id.imgEmpty)as ImageView
-                imgSessions.visibility = View.GONE
+                imgSessions.visibility = View.VISIBLE
 
-                reloadButton.visibility = View.GONE
+                reloadButton.visibility = View.VISIBLE
             }
         })
 
