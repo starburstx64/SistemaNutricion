@@ -28,4 +28,16 @@
     <string name="tab_text_2">Documentos</string>
     <string name="tab_text_3">Links</string>
     <string name="todo">TODO</string>
+
+    <string name="session_imc">IMC: %1s Kg.</string>
+    <string name="session_peso">Peso: %1s Kg.</string>
+    <string name="session_porGrasa">Porcentaje de grasa: %1s %%</string>
+    <string name="session_circCintura">Circunferencia de cintura: %1s cm.</string>
+    <string name="session_circCadera">Circunferencia de cadera: %1s cm.</string>
+    <string name="session_circBraquial">Circunferencia braquial: %1s cm.</string>
+    <string name="session_circMuneca">Cincunferencia muñeca: %1s cm.</string>
+    <string name="session_porWater">Porcentaje de agua: %1s %%</string>
+    <string name="session_masaMagra">Masa magra: %1s Kg.</string>
+    <string name="session_masaGrasa">Masa grasa: %1s Kg.</string>
+    <string name="no_sessions_message">No hay sesiones disponibles. Por favor contacte a su nutriologo.</string>
 </resources>
